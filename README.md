@@ -1,4 +1,4 @@
-Dockerized System Information Service
+Dockerized System Information Service: 
 This project consists of two microservices that gather system information and provide it through a unified HTTP endpoint. The services are containerized using Docker and managed with Docker Compose.
 
 ### Service1
