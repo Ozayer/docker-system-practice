@@ -1,0 +1,44 @@
+LLM Usage Report:
+
+Tools Used:
+ChatGPT: Used for various tasks such as debugging, summarizing, and formatting.
+GitHub Copilot: Integrated into VSCode for auto-completion and writing comments.
+
+How I Used ChatGPT:
+Simplifying Project Tasks: I used ChatGPT for general assistance with simpler tasks 
+throughout the project. One of the key ways it helped was by suggesting which services 
+would be simpler to implement in a small-scale project like this. For example, it guided 
+me toward using Flask for Service2 due to its lightweight nature and ease of setup.
+
+Debugging Errors: Whenever I encountered errors, especially in handling JSON formatting 
+and Docker networking issues, I turned to ChatGPT for quick debugging advice. It helped 
+me troubleshoot errors and provided suggestions on how to resolve the problems efficiently.
+
+JSON Formatting: For ensuring proper JSON formatting in the HTTP responses, I used 
+ChatGPT to clean up and organize the structure, helping me build well-formed JSON 
+responses in both Service1 and Service2.
+
+Summarizing Requirements: I asked ChatGPT to help me summarize the requirements provided 
+in the project, which greatly helped me in organizing the project deliverables. It allowed 
+me to break down the tasks into smaller, more manageable steps and focus on completing 
+them one by one.
+
+README, Findings, and Documentation: Toward the end of the project, I used ChatGPT for 
+generating various project documentation files, including the README.md, findings.txt, 
+and this llm.txt file. The grammar and formatting of these files were greatly enhanced 
+by leveraging ChatGPT, making the project deliverables more polished and professional.
+
+How I Used GitHub Copilot:
+Writing Comments and Auto-Completion: In VSCode, I used Copilot to help write comments 
+for the code and suggest code improvements. For instance, when I needed to replace 
+deprecated methods or find more efficient ways to write certain blocks of code, Copilot 
+provided useful suggestions directly in the editor.
+
+Code Modernization: Copilot helped me replace deprecated code segments with the latest 
+practices, ensuring that the project used up-to-date technology and syntax, particularly 
+in Java.
+
+Collaborative Document Writing: Toward the end, I combined Copilot and ChatGPT to help 
+me craft the README, findings.txt, and this llm.txt file. While Copilot offered useful 
+code comments and suggestions, ChatGPT provided more refined grammar and structure for 
+the project documentation.

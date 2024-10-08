@@ -1,0 +1,23 @@
+Findings
+
+1. Package Installation for System Information:
+To collect system information such as uptime, I had to install specific packages in the Docker container. 
+For example, in both Service1 (Java) and Service2 (Python), I needed to add a line in the Dockerfile to install 
+the procps package, which provides the ps and uptime commands. Without this package, the services wouldn't be 
+able to gather necessary system data, such as the list of running processes or uptime information. This highlighted 
+how containerized applications often need to explicitly install packages that are otherwise available by default 
+on a typical Linux distribution.
+
+2. Service Dependency:
+In the docker-compose.yaml, I configured Service1 to depend on Service2 using the depends_on directive. This ensures 
+that Service2 is started before Service1. However, if Service2 fails or is not running correctly, Service1 will also 
+not work as expected. This made me realize the importance of making services resilient to dependencies being unavailable, 
+especially in a production environment. A possible improvement could be adding error handling to Service1 so that it can 
+still provide partial information even if Service2 is down.
+
+3. Language Simplicity:
+Implementing the Python (Service2) service was much easier and faster compared to the Java (Service1) counterpart. 
+Python, combined with the Flask framework, allows for quick setup and minimal boilerplate code to get an HTTP server 
+up and running. In contrast, the Java service required more setup, including handling dependencies with Maven and 
+writing more code to expose a simple HTTP server. This exercise clearly showed the differences in complexity and 
+development speed between the two languages when building small-scale services like these.

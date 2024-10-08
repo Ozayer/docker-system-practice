@@ -1,0 +1,11 @@
+CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS          PORTS                    NAMES
+926706c42189   docker-compose-project-service1   "java -jar service1-…"   48 seconds ago   Up 47 seconds   0.0.0.0:8199->8199/tcp   docker-compose-project-service1-1
+bccfe2ab8c9a   docker-compose-project-service2   "python app.py"          48 seconds ago   Up 47 seconds   0.0.0.0:5000->5000/tcp   docker-compose-project-service2-1
+NETWORK ID     NAME                                 DRIVER    SCOPE
+e7c08e0d4229   bridge                               bridge    local
+156092b7f7af   docker-compose-project_app-network   bridge    local
+8d43630159f4   docker-compose-project_default       bridge    local
+4bb14191a63f   docker_default                       bridge    local
+dfb4482ec236   host                                 host      local
+3b0a06ddda2f   none                                 null      local
+9934545b2c73   timescaledb                          bridge    local

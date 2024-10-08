@@ -23,6 +23,8 @@ The two services run inside Docker containers and communicate with each other th
 - [How to Use](#how-to-use)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
+- [Generate Status Reports](#generate-status-reports)
+- [Additional Information](#additional-information)
 
 ## Technologies
 - Java 11 for Service1.
@@ -44,7 +46,12 @@ docker-compose-project/
 │   ├── app.py                     # Flask app for Service2
 │   ├── Dockerfile                 # Dockerfile for Service2
 │
+├── Reports/
+│   └── docker-status.txt          # Status report for Docker
+│
 ├── docker-compose.yaml             # Docker Compose configuration for both services
+├── llm.txt                         # LLM related information
+├── findings.txt                    # Findings and observations
 └── README.md                       # Project documentation
 ```
 
@@ -140,6 +147,18 @@ docker-compose logs service1
 docker-compose logs service2
 ```
 These logs can help you debug any runtime errors or connectivity issues between the services.
+
+## Generate Status Reports
+After running the services, generate a status report for Docker:
+```bash
+docker container ls > Reports/docker-status.txt
+docker network ls >> Reports/docker-status.txt
+```
+`docker-status.txt` includes the status of both services and the Docker network.
+
+## Additional Information
+- **findings.txt**: Contains findings and observations related to the project.
+- **llm.txt**: Includes information related to the LLM (Language Model) used in the project.
 
 ## Conclusion
 We now have a fully functional, Dockerized system information service composed of two microservices. We can run both services locally using Docker Compose, retrieve combined system information through a single HTTP endpoint, and easily extend or modify the project as needed.
