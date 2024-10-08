@@ -84,9 +84,9 @@ This command will:
     - Service2 on port 5000
 
 ### Step 3: Access the Services
-Once the services are running, you can access Service1’s `/info` endpoint:
+Once the services are running, you can access Service1’s `/` endpoint:
 ```bash
-curl http://localhost:8199/info
+curl http://localhost:8199
 ```
 This will return a JSON response combining the system information from both Service1 and Service2.
 
@@ -97,7 +97,7 @@ docker-compose up --build
 ```
 Open a browser or use `curl` to access the combined system information from Service1:
 ```bash
-curl http://localhost:8199/info
+curl http://localhost:8199
 ```
 You can also access Service2 directly if needed:
 ```bash
@@ -107,11 +107,11 @@ curl http://localhost:5000/info
 ## Testing
 
 ### Manual Testing
-You can manually test the services by hitting the `/info` endpoints and verifying the returned JSON response.
+You can manually test the services by hitting the `/` endpoints and verifying the returned JSON response.
 
 **Service1:**
 ```bash
-curl http://localhost:8199/info
+curl http://localhost:8199
 ```
 Expected JSON output: Combined system info from both Service1 and Service2.
 
