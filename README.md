@@ -61,7 +61,7 @@ Make sure you have the following installed on your machine:
 ### Step 1: Clone the repository
 Clone this repository to your local machine:
 ```bash
-git clone https://github.com/your-username/docker-compose-project.git
+git clone https://github.com/Ozayer/docker-system-practice.git
 cd docker-compose-project
 ```
 
@@ -142,4 +142,4 @@ docker-compose logs service2
 These logs can help you debug any runtime errors or connectivity issues between the services.
 
 ## Conclusion
-You now have a fully functional, Dockerized system information service composed of two microservices. You can run both services locally using Docker Compose, retrieve combined system information through a single HTTP endpoint, and easily extend or modify the project as needed.
+We now have a fully functional, Dockerized system information service composed of two microservices. We can run both services locally using Docker Compose, retrieve combined system information through a single HTTP endpoint, and easily extend or modify the project as needed.
