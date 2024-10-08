@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Create an HTTP server that listens on port 8199
         HttpServer server = HttpServer.create(new InetSocketAddress(8199), 0);
-        server.createContext("/info", new InfoHandler());
+        server.createContext("/", new InfoHandler());
         server.setExecutor(null); // Use the default executor
         System.out.println("Server started on port 8199");
         server.start();
