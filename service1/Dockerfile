@@ -18,7 +18,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /usr/src/app
 
 # Install procps to make ps command available
-RUN apt-get update && apt-get install -y procps
+RUN apt-get update && apt-get install -y procps curl
 
 # Copy the JAR file from the build stage
 COPY --from=build /usr/src/app/target/service1-1.0-SNAPSHOT.jar ./

@@ -1,13 +1,42 @@
 version: '3'
 services:
-  service1:
+  service1-1:
     build: ./service1
     ports:
-      - "8199:8199"
-    depends_on:
-      - service2
+      - "8199"
+    networks:
+      - app-network
+
+  service1-2:
+    build: ./service1
+    networks:
+      - app-network
+
+  service1-3:
+    build: ./service1
+    networks:
+      - app-network
 
   service2:
     build: ./service2
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
     ports:
-      - "5000:5000"
+      - "8198:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./htpasswd:/etc/nginx/.htpasswd
+      - ./html:/usr/share/nginx/html
+    networks:
+      - app-network
+    depends_on:
+      - service1-1
+      - service1-2
+      - service1-3
+
+networks:
+  app-network:
+    driver: bridge

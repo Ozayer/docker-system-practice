@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Interface</title>
+</head>
+<body>
+<h1>Service Control Interface</h1>
+<button onclick="makeRequest()">REQUEST</button>
+<button onclick="stopServices()">STOP</button>
+<br><br>
+<textarea id="response" rows="10" cols="200" readonly></textarea>
+
+<script>
+    // Function to send a request to Service1 through NGINX
+    function makeRequest() {
+        fetch('/api/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').value = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                document.getElementById('response').value = 'Error: ' + error;
+            });
+    }
+
+
+    // Function to stop services (implement this endpoint in your setup if needed)
+    function stopServices() {
+        fetch('/api/stop', { method: 'POST' })  // Use /api/stop if implemented
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('response').value = 'Services stopped';
+                } else {
+                    document.getElementById('response').value = 'Error stopping services';
+                }
+            })
+            .catch(error => {
+                document.getElementById('response').value = 'Error: ' + error;
+            });
+    }
+</script>
+</body>
+</html>

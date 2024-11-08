@@ -1,6 +1,7 @@
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,35 +14,52 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // Create an HTTP server that listens on port 8199
         HttpServer server = HttpServer.create(new InetSocketAddress(8199), 0);
-        server.createContext("/info", new InfoHandler());
-        server.setExecutor(null); // Use the default executor
-        System.out.println("Server started on port 8199");
+        server.createContext("/", new InfoHandler());
+        server.createContext("/stop", new StopHandler());
+        server.setExecutor(null);
+        System.out.println("Service1 instance started on port 8199");
         server.start();
+    }
+
+    static class StopHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) {
+            try {
+                // Respond with "Stopping services"
+                String response = "Stopping services";
+                exchange.sendResponseHeaders(200, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+
+                // Stop all Docker containers
+                Runtime.getRuntime().exec("docker compose down");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     static class InfoHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) {
             try {
-                // Retrieve container information and Service2 information
+                // Add a 2-second delay to simulate load
+                Thread.sleep(2000);
+
                 String containerInfo = getContainerInfo();
                 String service2Info = getService2Info();
 
-                // Combine both pieces of information into a single JSON string
                 String response = "{\n" +
                         "  \"service1\": " + containerInfo + ",\n" +
                         "  \"service2\": " + service2Info + "\n" +
                         "}";
 
-                // Send the response headers (200 OK)
                 exchange.sendResponseHeaders(200, response.getBytes().length);
-
-                // Send the response body
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(response.getBytes());
-                }
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
@@ -52,50 +70,40 @@ public class Main {
         }
 
         private String getContainerInfo() throws Exception {
-            // Retrieve the container's IP address
             String ip = InetAddress.getLocalHost().getHostAddress();
 
-            // Retrieve the list of running processes
-            String processes = executeCommand("ps -ax");
+            // Run commands and escape outputs to avoid JSON formatting issues
+            String processes = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ps -ax").getInputStream()))
+                    .lines().collect(Collectors.joining("\\n")).replace("\"", "\\\"");
+            String diskSpace = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("df").getInputStream()))
+                    .lines().collect(Collectors.joining("\\n")).replace("\"", "\\\"");
+            String uptime = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("uptime").getInputStream()))
+                    .lines().collect(Collectors.joining("\\n")).replace("\"", "\\\"");
 
-            // Retrieve the available disk space
-            String diskSpace = executeCommand("df");
-
-            // Retrieve the time since the last boot
-            String uptime = executeCommand("uptime");
-
-            // Return the information in JSON format (manually construct JSON)
             return "{\n" +
                     "    \"ip\": \"" + ip + "\",\n" +
-                    "    \"processes\": \"" + processes.replaceAll("\"", "\\\\\"") + "\",\n" +
-                    "    \"diskSpace\": \"" + diskSpace.replaceAll("\"", "\\\\\"") + "\",\n" +
-                    "    \"uptime\": \"" + uptime.replaceAll("\"", "\\\\\"") + "\"\n" +
+                    "    \"processes\": \"" + processes + "\",\n" +
+                    "    \"diskSpace\": \"" + diskSpace + "\",\n" +
+                    "    \"uptime\": \"" + uptime + "\"\n" +
                     "  }";
-        }
-
-        private String executeCommand(String command) throws Exception {
-            Process process = Runtime.getRuntime().exec(command);
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                return reader.lines().collect(Collectors.joining("\n"));
-            }
         }
 
         private String getService2Info() {
             try {
-                // URL of Service2 (running on port 5000 in the Docker network)
                 URL url = new URL("http://service2:5000/info");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
 
-                // Retrieve the response from Service2
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                    return in.lines().collect(Collectors.joining("\n"));
-                }
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String service2Response = in.lines().collect(Collectors.joining("\n"));
+                in.close();
+
+                return service2Response;
             } catch (Exception e) {
                 System.err.println("Failed to contact Service2: " + e.getMessage());
-                // Return error information in JSON format
                 return "{ \"error\": \"Service2 unavailable\" }";
             }
         }
+
     }
 }
